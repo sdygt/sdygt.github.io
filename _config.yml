@@ -1,5 +1,18 @@
-title: sdygt's techblog
+title: sdygt's blog @ github
 description: ╮(￣▽￣)╭
 show_downloads: false
 google_analytics:
 theme: jekyll-theme-cayman
+email: root@sdygt.net
+repository: sdygt/sdygt.github.io
+github_username: sdygt
+
+defaults:
+  -
+    scope:
+      path: "" # 一个空的字符串代表项目中所有的文件
+    values:
+      layout: "default"
+
+kramdown:
+  input: GFM
