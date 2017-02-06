@@ -2,8 +2,6 @@
 title: Travis CI运行构建脚本时报Permission Error的解决方法
 ---
 
-# Travis CI运行构建脚本时报Permission Error的解决方法
-
 把这个博客集成到Travis CI的时候出现了这样的错误：
 
 ```
@@ -11,7 +9,7 @@ title: Travis CI运行构建脚本时报Permission Error的解决方法
 The command "script/bootstrap" failed and exited with 126 during .
 ```
 
-因为这个博客的Jekyll主题是从[别的repo](https://github.com/pages-themes/cayman)上clone下来的，原来的构建脚本并没有动过，而且看了下原repo的travis状态是没问题的，觉得有点奇怪。逐去StackOverflow找到了[这个答案](https://stackoverflow.com/questions/33820638/travis-yml-gradlew-permission-denied)
+因为这个博客的Jekyll主题是从[别的repo](https://github.com/pages-themes/cayman)上clone下来的，原来的构建脚本并没有动过，而且看了下原repo的travis状态是没问题的，觉得有点奇怪。遂去StackOverflow找到了[这个答案](https://stackoverflow.com/questions/33820638/travis-yml-gradlew-permission-denied)
 
 结论是权限问题，没有加可执行位。
 

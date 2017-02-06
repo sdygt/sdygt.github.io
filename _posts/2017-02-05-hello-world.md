@@ -1,10 +1,9 @@
 ---
-layout: default
 title: HelloWorld
 author: asdasd
 ---
 
-# Hello, World!
+hello,world
 
 ```php
 <?php
