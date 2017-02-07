@@ -97,3 +97,58 @@ class Solution:
 
 这里用了一个try-except来应付B中出现了A里没有的字符的情况。
 
+## 13. 字符串查找 | strstr
+
+>对于一个给定的 source 字符串和一个 target 字符串，你应该在 source 字符串中找出 target 字符串出现的第一个位置(从0开始)。如果不存在，则返回 -1。
+
+{% highlight python %}
+class Solution:
+
+    def strStr(self, source, target):
+        if source is None or target is None:
+            return -1
+        return source.find(target)
+
+{% endhighlight %}
+
+来和我一起念：Python大法好！
+
+<small>#开玩笑的</small>
+
+理论上来说不用Python内置的方法的话也很容易想出O(n<sup>2</sup>)的算法。不过O(n)的算法也是有的([KMP算法](https://zh.wikipedia.org/wiki/%E5%85%8B%E5%8A%AA%E6%96%AF-%E8%8E%AB%E9%87%8C%E6%96%AF-%E6%99%AE%E6%8B%89%E7%89%B9%E7%AE%97%E6%B3%95))，可惜我暂时还不会_(:з」∠)_
+
+## 171. 乱序字符串 | anagrams
+
+>给出一个字符串数组S，找到其中所有的乱序字符串(Anagram)。如果一个字符串是乱序字符串，那么他存在一个字母集合相同，但顺序不同的字符串也在S中。所有的字符串都只包含小写字母。
+>
+>例如对于字符串数组`["lint","intl","inlt","code"]`返回`["lint","inlt","intl"]`
+
+应用了一下158中字符串排序的思路，统计每个单词的字符组合的出现次数，根据题目约定，出现多于一次的那个就对应要求的Anagram。
+
+{% highlight python %}
+class Solution:
+    # @param strs: A list of strings
+    # @return: A list of strings
+
+    def anagrams(self, strs):
+        bucket = {}
+        anag = []
+        for word in strs:
+            chars = [c for c in word]
+            chars.sort()
+            chars = "".join(chars)
+            if chars not in bucket:
+                bucket[chars] = 1
+            else:
+                bucket[chars] += 1
+
+        for word in strs:
+            chars = [c for c in word]
+            chars.sort()
+            chars = "".join(chars)
+            if bucket[chars] > 1:
+                anag.append(word)
+
+        return anag
+
+{% endhighlight %}
