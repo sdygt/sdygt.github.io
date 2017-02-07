@@ -152,3 +152,63 @@ class Solution:
         return anag
 
 {% endhighlight %}
+
+## 78. 最长公共前缀 | longest-common-prefix
+
+> 给k个字符串，求出他们的最长公共前缀(LCP)
+>  
+> eg. 在 "ABCD" "ABEF" 和 "ACEF" 中,  LCP 为 "A"  
+> 在 "ABCDEFG", "ABCEFG", "ABCEFA" 中, LCP 为 "ABC"
+
+那么基本思路就是逐个比对每个字符串的第n个字符了。这是“纵向优先”的方法。
+
+|  0   |  1   |  2   |  3   |  4   |  5   |  6   |
+| :--: | :--: | :--: | :--: | :--: | :--: | :--: |
+|  A   |  B   |  C   |  D   |  E   |  F   |  G   |
+|  A   |  B   |  C   |  E   |  F   |  G   |      |
+|  A   |  B   |  C   |  E   |  F   |  A   |      |
+
+{% highlight python %}
+class Solution:
+    # @param strs: A list of strings
+    # @return: The longest common prefix
+
+    def longestCommonPrefix(self, strs):
+        if len(strs) == 0:
+            return ""
+        if len(strs) == 1:
+            return strs[0]
+        length = min([len(s) for s in strs])
+        if length == 0:
+            return ""
+        for n in range(0, length):
+            nthchars = [word[n] for word in strs]
+            flag = True
+            for i in range(0, len(nthchars) - 1):
+                flag = flag and (nthchars[i] == nthchars[i + 1])
+            if not flag:
+                return strs[0][:n]
+        return strs[0]
+
+{% endhighlight %}
+
+这里把每一列的字符都抽出来作为了一个数组，实际上应该还可以再简化一些。
+
+“横向优先”的思路也是可以的，[这里](http://www.chenguanghe.com/lintcode-longest-common-prefix/)有个例子：
+
+{% highlight java %}
+public String longestCommonPrefix(String[] strs) {
+    if(strs == null || strs.length == 0)
+        return "";
+    String prefix = strs[0];
+    for(int i = 1; i < strs.length; i++) {
+        int j = 0;
+        while(j < prefix.length() && j < strs[i].length() && prefix.charAt(j)==strs[i].charAt(j))
+            j++;
+        prefix = prefix.substring(0,j);
+    }
+    return prefix;
+}
+{% endhighlight %}
+
+顺便这题有的testcase有点坑的感觉。会有`[]` `["ABC"]` `["ABC","","AB"]`这样的情况出现，要注意一下（被这些testcase给WA了好多次的我无奈地说道）
