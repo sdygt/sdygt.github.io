@@ -212,3 +212,93 @@ public String longestCommonPrefix(String[] strs) {
 {% endhighlight %}
 
 顺便这题有的testcase有点坑的感觉。会有`[]` `["ABC"]` `["ABC","","AB"]`这样的情况出现，要注意一下（被这些testcase给WA了好多次的我无奈地说道）
+
+## 79. 最长公共子串 | longest-common-substring
+
+>给出两个字符串，找到最长公共子串，并返回其长度。  
+>子串的字符应该连续的出现在原字符串中，这与子序列有所不同。  
+> 
+>eg. 给出`A=“ABCD”`，`B=“CBCE”`，返回`2`  
+
+乍一看以为和最长公共子序列差不多，改造一下就好，于是先顺手实现了递归版的最长公共子序列。
+
+{% highlight python %}
+def LCS(A, B):
+    if A == "" or B == "":
+        return ""
+
+    if A[-1:] == B[-1:]:
+        return LCS(A[:-1], B[:-1]) + A[-1:]
+    else:
+        x = LCS(A[:-1], B)
+        y = LCS(A, B[:-1])
+        if len(x) > len(y):
+            return x
+        else:
+            return y
+
+{% endhighlight %}
+
+然后发现好像没那么好改……
+
+而且讲道理，用递归来算LCS会导致大量的重复计算，这个就是递归最痛苦的，而且这个效率efficiency……
+
+还是应该用动态规划(?)来做。
+
+{% highlight python %}
+class Solution:
+    # @param A, B: Two string.
+    # @return: the length of the longest common substring.
+
+    def longestCommonSubstring(self, A, B):
+        if A == "" or B == "":
+            return 0
+
+        arr = [[0 for j in range(len(A))] for i in range(len(B))]
+
+        for i in range(len(A)):
+            if A[i] == B[0]:
+                arr[0][i] = 1
+            else:
+                arr[0][i] = 0
+
+        for j in range(len(B)):
+            if A[0] == B[j]:
+                arr[j][0] = 1
+            else:
+                arr[j][0] = 0
+
+        for i in range(1, len(A)):
+            for j in range(1, len(B)):
+                if A[i] == B[j]:
+                    arr[j][i] = arr[j - 1][i - 1] + 1
+
+        return max(list(map(max, arr)))
+
+{% endhighlight %}
+
+这里相当于列了一张二维表格`arr[i][j]`来记录了`A[:j]`和`B[:i]`的最长公共子串的长度。
+
+|       |      | **A** | **B** | **A** | **B** |
+| :---: | :--: | :---: | :---: | :---: | :---: |
+|       |  0   |   0   |   0   |   0   |   0   |
+| **B** |  0   |   0   | **1** |   0   |   1   |
+| **A** |  0   | **1** |   0   | **2** |   0   |
+| **B** |  0   |   0   | **2** |   0   |   3   |
+| **A** |  0   |   1   |   0   | **3** |   0   |
+
+列出计算方程的话就是这样的
+
+$$
+\mathit{LCSuffix}(S_{1..p}, T_{1..q}) =
+\begin{cases}
+       \mathit{LCSuffix}(S_{1..p-1}, T_{1..q-1}) + 1  & \mathrm{if } \; S[p] = T[q] \\
+       0                                            & \mathrm{otherwise}.
+\end{cases}
+$$
+
+$$
+\mathit{LCSubstr}(S, T) = \max_{1 \leq i \leq m, 1 \leq j \leq n} \mathit{LCSuff}(S_{1..i}, T_{1..j}) \;
+$$
+
+此外做这道题的时候最痛苦的就是i和j方向经常弄混……保持头脑清醒很重要啊╮（﹀＿﹀）╭
