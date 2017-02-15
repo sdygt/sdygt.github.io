@@ -15,7 +15,7 @@ layout: index
         </h3>
         {% endif %}
         <div class="post-content-preview">
-            {{ post.content | strip_html | truncate:200 }}
+            {{ post.excerpt | strip_html | truncate:200 }}
         </div>
     </a>
     <p class="post-meta">
