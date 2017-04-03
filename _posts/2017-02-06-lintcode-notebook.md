@@ -1,5 +1,6 @@
 ---
 title: LintCode笔记本
+mathjax: true
 ---
 
 ## 158. 两个字符串是变位词 | two-strings-are-anagrams
